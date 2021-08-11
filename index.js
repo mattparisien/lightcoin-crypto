@@ -4,7 +4,8 @@
 let balance = 500.00;
 
 class Account {
-  constructor (username){
+
+    constructor (username){
     this.username = username;
     this.balance = 0;
   }
@@ -22,22 +23,20 @@ class Transaction {
   constructor(amount, account) {
     this.amount = amount;
     this.account = account;
-  }
+  };
 
   commit() {
+    if (!this.isAllowed()) return false;
     this.time = new Date();
     this.account.addTransaction(this);
-  }
+    return true;
+  };
 }
 
 class Withdrawal extends Transaction{
 
   get value () {
     return this.amount;
-  }
-
-  commit() {
-    this.account.balance -= this.value;
   }
 };
 
@@ -47,8 +46,8 @@ class Deposit extends Transaction{
     return this.amount;
   }
 
-  commit() {
-    this.account.balance += this.value;
+  isAllowed() {
+    return true;
   }
 }
 
